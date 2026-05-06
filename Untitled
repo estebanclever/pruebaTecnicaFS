@@ -1,9 +1,0 @@
-# Backend
-PORT=3000
-
-# PostgreSQL (docker)
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=prueba_fs
-DB_USER=postgres
-DB_PASSWORD=postgres
