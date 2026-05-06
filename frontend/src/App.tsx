@@ -55,6 +55,10 @@ function App() {
         const exists = prev.some((f) => f.id === data.id);
         return exists ? prev : [data, ...prev];
       });
+
+      // Limpiar selección para mejor UX
+      setSelectedName("");
+      setDetail(null);
     } catch (error: any) {
       if (error?.response?.status === 409) {
         alert("Este pokémon ya está en favoritos.");

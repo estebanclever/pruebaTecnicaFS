@@ -39,7 +39,7 @@ export const getPokemonByName = async (
   next: NextFunction
 ) => {
   try {
-    const name = req.params.name?.trim().toLowerCase();
+    const name = (req.params.name as string | undefined)?.trim().toLowerCase();
 
     if (!name) {
       return res.status(400).json({ message: "El parámetro name es obligatorio" });

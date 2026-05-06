@@ -29,7 +29,9 @@ Aplicación full stack que consume la PokéAPI para listar y detallar pokémones
 
 ---
 
-## 3) Instrucciones de instalación y ejecución (paso a paso)
+## 3) Instrucciones de instalación y ejecución (vía Docker)
+
+El proyecto está completamente dockerizado. Para levantarlo, sigue estos pasos:
 
 ### Paso 1: clonar el repositorio
 ```bash
@@ -37,69 +39,25 @@ git clone <URL_DEL_REPO>
 cd pruebaTecnicaFS
 ```
 
-### Paso 2: configurar variables de entorno
+### Paso 2: configurar variables de entorno (opcional)
+Los archivos `docker-compose.yml` y los Dockerfiles ya incluyen valores por defecto funcionales. Si necesitas cambiarlos, puedes editar el archivo `docker-compose.yml` o crear los archivos `.env` en las carpetas `backend/` y `frontend/`.
 
-Crear archivo `backend/.env`:
-
-```env
-PORT=3000
-
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=prueba_fs
-DB_USER=postgres
-DB_PASSWORD=postgres
-
-POKEAPI_BASE_URL=https://pokeapi.co/api/v2
-FRONTEND_ORIGIN=http://localhost:5173
-```
-
-Crear archivo `frontend/.env`:
-
-```env
-VITE_API_URL=http://localhost:3000
-VITE_SOCKET_URL=http://localhost:3000
-```
-
-### Paso 3: levantar PostgreSQL dockerizado
-
-Desde la raíz del proyecto:
+### Paso 3: levantar la aplicación
+Desde la raíz del proyecto, ejecuta:
 
 ```bash
-docker compose up -d
+docker-compose up --build
 ```
 
-Verificar estado:
+Este comando:
+1. Construirá las imágenes del Backend (Node.js) y Frontend (React/Nginx).
+2. Levantará un contenedor de PostgreSQL.
+3. **Ejecutará automáticamente las migraciones** para crear las tablas necesarias en la base de datos.
+4. Sincronizará los tres servicios.
 
-```bash
-docker compose ps
-```
-
-### Paso 4: ejecutar migración de favoritos
-
-Desde la raíz del proyecto:
-
-```bash
-docker compose exec -T db psql -U postgres -d prueba_fs < backend/src/db/migrations/001_create_favorites.sql
-```
-
-### Paso 5: instalar dependencias y ejecutar backend
-
-```bash
-cd backend
-npm install
-npm run dev
-```
-
-### Paso 6: instalar dependencias y ejecutar frontend
-
-En otra terminal:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
+Una vez que los logs indiquen que los servicios están listos, accede a:
+- **Frontend:** [http://localhost:5173](http://localhost:5173)
+- **Backend API:** [http://localhost:3000](http://localhost:3000)
 
 ---
 
@@ -175,6 +133,5 @@ Tests mínimos implementados con Vitest + Supertest:
 Ejecutar tests:
 
 ```bash
-cd backend
-npm test
+docker-compose exec backend npm test
 ```
